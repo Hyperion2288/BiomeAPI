@@ -1,0 +1,170 @@
+/**
+ * Most of the basic static biome manipulation occurs through here
+ * Also controls the world generator
+ */
+class BiomeAPI
+{
+	/**
+	 * Sets the world generator to the default
+	 */
+	public static void setDefualtWorldGenerator();
+	
+	/**
+	 * Sets the world generator to the one supplied by this function
+	 * @param newWorldGen - the generator to use
+	 */
+	public static void setWorldGenerator(IWorldGenerator newWorldGen);
+	
+        /**
+         * This assigns a biome an id based on the avaiable slots
+         * It also searches for the id in config file if this is not the first time running the mod
+         * Key should be a unique identifier for the biome
+         * @param key
+         * @return
+         */
+        public static int getNextBiomeID(String key);
+	
+	/**
+	 * This replaces one biome with another in the BiomeGenBase.biomeList
+	 * This is useful for inserting your own version of the vanilla biomes
+	 * Because it does not edit the biomeIDs, any time someone references the replaced biomeID
+	 * the new biome will be returned instead
+	 * @param biome to be replaced
+	 * @param replacee
+	 */
+	public static void replaceBiome(BiomeGenBase biome1, BiomeGenBase biome2);
+	
+	/**
+	 * This removes the specified biome
+	 * It only works for the vanilla biomes and only for the default generator
+	 * If you want to it to work for other biomes or generators just code it in yourself :)
+	 * For those biomes not in the GenLayerBiome this does a simple replace with the plains biome
+	 * If you would like a different replace biome simply call replaceBiome yourself
+	 * @param biome
+	 */
+	public static void removeBiome(BiomeGenBase biome);
+}
+
+/**
+ * A class that wants to replace the default world generator must implement this interface
+ * @author Michael
+ *
+ */
+public interface IWorldGenerator
+{
+	public GenLayer[] generateWorld(long seed, WorldType worldType);
+}
+
+/**
+ * This includes only the changes that I have made
+ */
+class BiomeGenBase
+{
+   /**
+     * This allows a mod to add an Entity to the monster list with only having to know the biomeID for the biome
+     * This is an attempt to add a mechanism to add compatibility mods between biome mods and creature mods
+     * I plan on working a more general version with modloader but that is not a high priority
+     * @param biomeId
+     * @param Class entity
+     * @param a
+     * @param b
+     * @param c
+     */
+    public static void addMonsterList(int biomeId, Class entity, int a, int b, int c);
+
+    /**
+     * See addMonsterList
+     * @param biomeId
+     * @param Class entity
+     * @param a
+     * @param b
+     * @param c
+     */
+    public static void addCreatureList(int biomeId, Class entity, int a, int b, int c);
+
+   /**
+     * See addMonsterList
+     * @param biomeId
+     * @param Class entity
+     * @param a
+     * @param b
+     * @param c
+     */
+    public static void addWaterCreatureList(int biomeId, Class entity, int a, int b, int c);
+
+    /**
+     * This adds general WorldGenerators to BiomeGenBase
+     * I do not recommend using this but instead coding the Generator directly into the biome or adding it into the BiomeDecorator
+     * This uses a hash map to access the generator so you must pass a key to identify the generator by
+     * @param key
+     * @param gen
+     */
+    public static void addWorldGen(String key, WorldGenerator gen);
+
+    /**
+     * This returns a previously added generator
+     * This does not check to see if the key is valid, YOU MUST DO THIS!
+     * @param key
+     * @return
+     */
+    public static WorldGenerator getWorldGen(String key);
+
+    /**
+     * This adds the biome to the default world generator in GenLayerBiome
+     * @return
+     */
+    public BiomeGenBase addBiomeGen();
+
+    /**
+     * This adds the biome to the spawn biome list in WorldChunkManager
+     * @return
+     */
+    public BiomeGenBase addBiomeSpawn();
+
+    /**
+     * This adds the biome to the allowed spawn list for Villages
+     * @return
+     */
+    public BiomeGenBase addBiomeVillage();
+
+    /**
+     * This adds the biome to the allowed spawn list for Stronholds
+     * @return
+     */
+    public BiomeGenBase addBiomeStronghold();
+
+    /**
+     * This adds the biome to the default generator, to the spawn list, to the village spawn list and to the stronghold spawn list
+     * @return
+     */
+    public BiomeGenBase addBiomeEverything();
+}
+
+/**
+ * This has only my changes
+ * WorldGenerators added to the BiomeDecorator are called before the tree generation
+ */
+class BiomeDecorator
+{
+	/**
+     	 * This adds the WorldGenerator to the list of generators
+     	 * This uses a hashmap to store the generator, what this means is that you pass a unique string identifier for each generator
+    	 * The rate is how often this called for what I think is each chunk and is the default value
+     	 * Generators add are called right before the tree generation
+    	 * @param key
+    	 * @param rate
+    	 * @param gen
+    	 */
+    	public static void addDecorator(String key, int rate, WorldGenerator gen);
+
+	/**
+    	 * This allows a biome to change the rate of the generator for itself
+    	 * If you edit the base class, call this after you add the generator to the list
+   	 * e.g. from somewhere in your code (such as your mod_*.load()):
+   	 * BiomeGenBase.biomeDecorator.setDecoratorRate("whatever", 3);
+   	 * @param key
+   	 * @param rate
+    	 */
+    	public void setDecoratorRate(String key, int rate);
+}
+

@@ -477,29 +477,4 @@ public abstract class BiomeGenBase
 	{
 		return addBiomeGen().addBiomeSpawn().addBiomeVillage().addBiomeStronghold();
 	}
-	
-	/**
-	 * This assigns a biome an id based on the avaiable slots
-	 * It also searches for the id in config file if this is not the first time running the mod
-	 * Key should be a unique identifier for the biome
-	 * @param key
-	 * @return
-	 */
-	public static int getNextBiomeID(String key)
-	{
-		//Start by searching for the biome in the config file
-		if(ModLoader.props.containsKey(key))
-			return Integer.parseInt(ModLoader.props.getProperty(key));
-		
-		//Didn't find it so search for a new id
-		for(int i = 0; i < biomeList.length; i++)
-			if(biomeList[i] == null) 
-			{
-				// Add the value to the config file
-				ModLoader.props.setProperty(key, Integer.toString(i));
-				return i;
-			}
-		// return -1 if the array is filled up and there are no slots left
-		return -1; 
-	}
 }

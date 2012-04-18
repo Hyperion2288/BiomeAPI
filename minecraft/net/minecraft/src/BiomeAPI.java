@@ -43,6 +43,31 @@ public abstract class BiomeAPI
 	}
 	
 	/**
+	 * This assigns a biome an id based on the avaiable slots
+	 * It also searches for the id in config file if this is not the first time running the mod
+	 * Key should be a unique identifier for the biome
+	 * @param key
+	 * @return
+	 */
+	public static int getNextBiomeID(String key)
+	{
+		//Start by searching for the biome in the config file
+		if(ModLoader.props.containsKey(key))
+			return Integer.parseInt(ModLoader.props.getProperty(key));
+		
+		//Didn't find it so search for a new id
+		for(int i = 0; i < BiomeGenBase.biomeList.length; i++)
+			if(BiomeGenBase.biomeList[i] == null) 
+			{
+				// Add the value to the config file
+				ModLoader.props.setProperty(key, Integer.toString(i));
+				return i;
+			}
+		// return -1 if the array is filled up and there are no slots left
+		return -1; 
+	}
+	
+	/**
 	 * This replaces one biome with another in the BiomeGenBase.biomeList
 	 * This is useful for inserting your own version of the vanilla biomes
 	 * Because it does not edit the biomeIDs, any time someone references the replaced biomeID
