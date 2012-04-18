@@ -8,5 +8,4 @@ package net.minecraft.src;
 public interface IWorldGenerator
 {
 	public GenLayer[] generateWorld(long seed, WorldType worldType);
-	public int[] getInts(int x, int z, int width, int depth);
 }
