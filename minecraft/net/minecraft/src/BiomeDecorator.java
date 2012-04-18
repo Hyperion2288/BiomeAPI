@@ -133,10 +133,23 @@ public class BiomeDecorator
     /** True if decorator should generate surface lava & water */
     public boolean generateLakes;
     
+    /**
+     * These set up user WorldGenerators for use.
+     * It is setup so that it does not matter whether the BiomeGenBase object is created before or after the WorldGenerator is added to the list
+     */
     protected static HashMap decoratorsStatic = new HashMap();
     protected HashMap decorators = new HashMap();
     protected static List decoratorKeys = new ArrayList();
     
+    /**
+     * This adds the WorldGenerator to the list of generators
+     * This uses a hashmap to store the generator, what this means is that you pass a unique string identifier for each generator
+     * The rate is how often this called for what I think is each chunk and is the default value
+     * Generators add are called right before the tree generation
+     * @param key
+     * @param rate
+     * @param gen
+     */
     public static void addDecorator(String key, int rate, WorldGenerator gen)
     {
     	if(gen == null)
@@ -153,6 +166,14 @@ public class BiomeDecorator
     	}
     }
     
+    /**
+     * This allows a biome to change the rate of the generator for itself
+     * If you edit the base class, call this after you add the generator to the list
+     * e.g. from somewhere in your code (such as your mod_*.load()):
+     * BiomeGenBase.biomeDecorator.setDecoratorRate("whatever", 3);
+     * @param key
+     * @param rate
+     */
     public void setDecoratorRate(String key, int rate)
     {
     	BiomeDecoratorGen biomeGen = (BiomeDecoratorGen)decorators.get(key);

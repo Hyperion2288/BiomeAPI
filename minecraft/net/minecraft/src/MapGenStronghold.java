@@ -9,8 +9,16 @@ public class MapGenStronghold extends MapGenStructure
     //private BiomeGenBase[] allowedBiomeGenBases;
     
     /** A list of all the biomes villages can spawn in. */
+	/**
+	 * Stronghold uses a different method to set the spawn biomes then villages did that was not easy for adding in biomes on the fly
+	 * Therefore, I changed things around to make it easier
+	 */
     public static List strongholdSpawnBiomes = new ArrayList();
     
+    /**
+     * This adds the biome to list of avaialbe spawn biomes
+     * @param biome
+     */
     public static void addStrongholdBiomes(BiomeGenBase biome)
     {
     	for(int i = 0; i < strongholdSpawnBiomes.size(); i++)

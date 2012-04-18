@@ -17,6 +17,7 @@ public class WorldChunkManager
     /** A list of biomes that the player can spawn in. */
     private List biomesToSpawnIn;
     
+    /** This is a list of biomes to add into the spawn list when the WorldChunkManager object is created */
     private static List biomesToAddIn = new ArrayList();
 
     protected WorldChunkManager()
@@ -36,6 +37,7 @@ public class WorldChunkManager
     public WorldChunkManager(long par1, WorldType par3WorldType)
     {
         this();
+        // This is where hijack the world generation process
         GenLayer[] var4 = BiomeAPI.genWorld(par1, par3WorldType);
         this.genBiomes = var4[0];
         this.biomeIndexLayer = var4[1];
@@ -56,8 +58,8 @@ public class WorldChunkManager
     
     /**
      * Adds a biome to the list of biomes to spawn in
+     * @param biome
      */
-    
     public static void addBiomeToSpawnIn(BiomeGenBase biome)
     {
     	for(int i = 0; i < biomesToAddIn.size(); i++)
@@ -155,6 +157,7 @@ public class WorldChunkManager
 
         for (int var7 = 0; var7 < par4 * par5; ++var7)
         {
+        	// Here is where hack the ever-loving-shit out of the genlayer to disable some of the biomes
         	if(BiomeAPI.disabledSpecialBiomes[0][0] == 1 && (BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.ocean.biomeID || BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.beach.biomeID))
             {
         		par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[0][1]];
@@ -167,13 +170,9 @@ public class WorldChunkManager
             {
         		par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[2][1]];
             }
-        	else if(BiomeAPI.disabledSpecialBiomes[3][0] == 1 && BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.swampland.biomeID)
+        	else if(BiomeAPI.disabledSpecialBiomes[3][0] == 1 && (BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.mushroomIsland.biomeID || BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.mushroomIslandShore.biomeID))
             {
         		par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[3][1]];
-            }
-        	else if(BiomeAPI.disabledSpecialBiomes[4][0] == 1 && (BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.mushroomIsland.biomeID || BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.mushroomIslandShore.biomeID))
-            {
-        		par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[4][1]];
             }
         	else par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[var6[var7]];
         }
@@ -215,6 +214,7 @@ public class WorldChunkManager
 
             for (int var8 = 0; var8 < par4 * par5; ++var8)
             {
+            	// Here is where hack the ever-loving-shit out of the genlayer to disable some of the biomes
             	if(BiomeAPI.disabledSpecialBiomes[0][0] == 1 && (BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.ocean.biomeID || BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.beach.biomeID))
                 {
             		par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[0][1]];
@@ -227,13 +227,9 @@ public class WorldChunkManager
                 {
             		par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[2][1]];
                 }
-            	else if(BiomeAPI.disabledSpecialBiomes[3][0] == 1 && BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.swampland.biomeID)
+            	else if(BiomeAPI.disabledSpecialBiomes[3][0] == 1 && (BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.mushroomIsland.biomeID || BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.mushroomIslandShore.biomeID))
                 {
             		par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[3][1]];
-                }
-            	else if(BiomeAPI.disabledSpecialBiomes[4][0] == 1 && (BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.mushroomIsland.biomeID || BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.mushroomIslandShore.biomeID))
-                {
-            		par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[4][1]];
                 }
             	else par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[var7[var8]];
             }

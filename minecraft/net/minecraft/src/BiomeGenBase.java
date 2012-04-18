@@ -79,6 +79,16 @@ public abstract class BiomeGenBase
      */
     protected List spawnableMonsterList;
 
+    /**
+     * This allows a mod to add an Entity to the monster list with only having to know the biomeID for the biome
+     * This is an attempt to add a mechanism to add compatibility mods between biome mods and creature mods
+     * I plan on working a more general version with modloader but that is not a high priority
+     * @param biomeId
+     * @param Class entity
+     * @param a
+     * @param b
+     * @param c
+     */
     public static void addMonsterList(int biomeId, Class entity, int a, int b, int c)
     {
     	BiomeGenBase biome = BiomeGenBase.biomeList[biomeId];
@@ -91,6 +101,14 @@ public abstract class BiomeGenBase
      */
     protected List spawnableCreatureList;
     
+    /**
+     * See addMonsterList
+     * @param biomeId
+     * @param Class entity
+     * @param a
+     * @param b
+     * @param c
+     */
     public static void addCreatureList(int biomeId, Class entity, int a, int b, int c)
     {
     	BiomeGenBase biome = BiomeGenBase.biomeList[biomeId];
@@ -103,6 +121,14 @@ public abstract class BiomeGenBase
      */
     protected List spawnableWaterCreatureList;
     
+    /**
+     * See addMonsterList
+     * @param biomeId
+     * @param Class entity
+     * @param a
+     * @param b
+     * @param c
+     */
     public static void addWaterCreatureList(int biomeId, Class entity, int a, int b, int c)
     {
     	BiomeGenBase biome = BiomeGenBase.biomeList[biomeId];
@@ -124,8 +150,19 @@ public abstract class BiomeGenBase
     protected WorldGenBigTree worldGenBigTree;
     protected WorldGenForest worldGenForest;
     protected WorldGenSwamp worldGenSwamp;
+    
+    /**
+     * This holds the new WorldGenerators
+     */
     protected static HashMap extraGens = new HashMap();
     
+    /**
+     * This adds general WorldGenerators to BiomeGenBase
+     * I do not recommend using this but instead coding the Generator directly into the biome or adding it into the BiomeDecorator
+     * This uses a hash map to access the generator so you must pass a key to identify the generator by
+     * @param key
+     * @param gen
+     */
     public static void addWorldGen(String key, WorldGenerator gen)
     {
     	if(gen == null)
@@ -135,6 +172,12 @@ public abstract class BiomeGenBase
     	extraGens.put(key, gen);
     }
     
+    /**
+     * This returns a previously added generator
+     * This does not check to see if the key is valid, YOU MUST DO THIS!
+     * @param key
+     * @return
+     */
     public static WorldGenerator getWorldGen(String key)
     {
     	return (WorldGenerator)extraGens.get(key);
@@ -159,6 +202,7 @@ public abstract class BiomeGenBase
         this.worldGenForest = new WorldGenForest(false);
         this.worldGenSwamp = new WorldGenSwamp();
         this.biomeID = par1;
+        if(biomeList[par1] != null) throw new MinecraftException("A biome already exists at id: " + par1);
         biomeList[par1] = this;
         this.biomeDecorator = this.createBiomeDecorator();
         this.spawnableCreatureList.add(new SpawnListEntry(EntitySheep.class, 12, 4, 4));
@@ -184,6 +228,7 @@ public abstract class BiomeGenBase
 
     /**
      * Sets the temperature and rainfall of this biome.
+     * This function and all other similiar functions have been changed to public to allow easy changes outside of this class - Hyperion2288
      */
     public BiomeGenBase setTemperatureRainfall(float par1, float par2)
     {
@@ -375,6 +420,10 @@ public abstract class BiomeGenBase
         return ColorizerFoliage.getFoliageColor(var1, var3);
     }
 	
+    /**
+     * This adds the biome to the default world generator in GenLayerBiome
+     * @return
+     */
 	public BiomeGenBase addBiomeGen()
 	{
 		for(int i = 0; i < GenLayerBiome.biomeArray.length; i++)
@@ -388,12 +437,20 @@ public abstract class BiomeGenBase
 		return this;
 	}
 	
+	/**
+	 * This adds the biome to the spawn biome list in WorldChunkManager
+	 * @return
+	 */
 	public BiomeGenBase addBiomeSpawn()
 	{
 		WorldChunkManager.addBiomeToSpawnIn(this);
 		return this;
 	}
 	
+	/**
+	 * This adds the biome to the allowed spawn list for Villages
+	 * @return
+	 */
 	public BiomeGenBase addBiomeVillage()
 	{
 		for(int i = 0; i < MapGenVillage.villageSpawnBiomes.size(); i++)
@@ -402,12 +459,20 @@ public abstract class BiomeGenBase
 		return this;
 	}
 	
+	/**
+	 * This adds the biome to the allowed spawn list for Stronholds
+	 * @return
+	 */
 	public BiomeGenBase addBiomeStronghold()
 	{
 		MapGenStronghold.addStrongholdBiomes(this);
 		return this;
 	}
 	
+	/**
+	 * This adds the biome to the default generator, to the spawn list, to the village spawn list and to the stronghold spawn list
+	 * @return
+	 */
 	public BiomeGenBase addBiomeEverything()
 	{
 		return addBiomeGen().addBiomeSpawn().addBiomeVillage().addBiomeStronghold();
