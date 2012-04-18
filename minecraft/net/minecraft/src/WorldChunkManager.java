@@ -157,24 +157,7 @@ public class WorldChunkManager
 
         for (int var7 = 0; var7 < par4 * par5; ++var7)
         {
-        	// Here is where hack the ever-loving-shit out of the genlayer to disable some of the biomes
-        	if(BiomeAPI.disabledSpecialBiomes[0][0] == 1 && (BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.ocean.biomeID || BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.beach.biomeID))
-            {
-        		par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[0][1]];
-            }
-        	else if(BiomeAPI.disabledSpecialBiomes[1][0] == 1 && BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.river.biomeID)
-            {
-        		par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[1][1]];
-            }
-        	else if(BiomeAPI.disabledSpecialBiomes[2][0] == 1 && BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.icePlains.biomeID)
-            {
-        		par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[2][1]];
-            }
-        	else if(BiomeAPI.disabledSpecialBiomes[3][0] == 1 && (BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.mushroomIsland.biomeID || BiomeGenBase.biomeList[var6[var7]].biomeID == BiomeGenBase.mushroomIslandShore.biomeID))
-            {
-        		par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[3][1]];
-            }
-        	else par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[var6[var7]];
+        	par1ArrayOfBiomeGenBase[var7] = BiomeGenBase.biomeList[var6[var7]];
         }
 
         return par1ArrayOfBiomeGenBase;
@@ -214,24 +197,7 @@ public class WorldChunkManager
 
             for (int var8 = 0; var8 < par4 * par5; ++var8)
             {
-            	// Here is where hack the ever-loving-shit out of the genlayer to disable some of the biomes
-            	if(BiomeAPI.disabledSpecialBiomes[0][0] == 1 && (BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.ocean.biomeID || BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.beach.biomeID))
-                {
-            		par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[0][1]];
-                }
-            	else if(BiomeAPI.disabledSpecialBiomes[1][0] == 1 && BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.river.biomeID)
-                {
-            		par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[1][1]];
-                }
-            	else if(BiomeAPI.disabledSpecialBiomes[2][0] == 1 && BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.icePlains.biomeID)
-                {
-            		par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[2][1]];
-                }
-            	else if(BiomeAPI.disabledSpecialBiomes[3][0] == 1 && (BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.mushroomIsland.biomeID || BiomeGenBase.biomeList[var7[var8]].biomeID == BiomeGenBase.mushroomIslandShore.biomeID))
-                {
-            		par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[BiomeAPI.disabledSpecialBiomes[3][1]];
-                }
-            	else par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[var7[var8]];
+            	par1ArrayOfBiomeGenBase[var8] = BiomeGenBase.biomeList[var7[var8]];
             }
 
             return par1ArrayOfBiomeGenBase;

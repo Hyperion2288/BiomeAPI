@@ -43,9 +43,24 @@ public abstract class BiomeAPI
 	}
 	
 	/**
+	 * This replaces one biome with another in the BiomeGenBase.biomeList
+	 * This is useful for inserting your own version of the vanilla biomes
+	 * Because it does not edit the biomeIDs, any time someone references the replaced biomeID
+	 * the new biome will be returned instead
+	 * @param biome to be replaced
+	 * @param replacee
+	 */
+	public static void replaceBiome(BiomeGenBase biome1, BiomeGenBase biome2)
+	{
+		BiomeGenBase.biomeList[biome1.biomeID] = biome2;
+	}
+	
+	/**
 	 * This removes the specified biome
 	 * It only works for the vanilla biomes and only for the default generator
 	 * If you want to it to work for other biomes or generators just code it in yourself :)
+	 * For those biomes not in the GenLayerBiome this does a simple replace with the plains biome
+	 * If you would like a different replace biome simply call replaceBiome yourself
 	 * @param biome
 	 */
 	public static void removeBiome(BiomeGenBase biome)
@@ -55,30 +70,17 @@ public abstract class BiomeAPI
 			throw new MinecraftException("You can only remove the original biomes through this method.");
 		
 		// start with the generator since it is the hardest
-		if(biome == BiomeGenBase.ocean)
+		if(biome == BiomeGenBase.ocean || biome == BiomeGenBase.mushroomIsland)
 		{
-			disabledSpecialBiomes[0][0] = 1;
-			disabledSpecialBiomes[0][1] = BiomeGenBase.plains.biomeID;
+			replaceBiome(biome, BiomeGenBase.plains);
+			if(biome == BiomeGenBase.ocean) 
+				replaceBiome(BiomeGenBase.beach, BiomeGenBase.plains);
+			else
+				replaceBiome(BiomeGenBase.mushroomIslandShore, BiomeGenBase.plains);
 		}
-		else if(biome == BiomeGenBase.river)
+		else if(biome == BiomeGenBase.river || biome == BiomeGenBase.river)
 		{
-			disabledSpecialBiomes[1][0] = 1;
-			disabledSpecialBiomes[1][1] = BiomeGenBase.plains.biomeID;
-		}
-		else if(biome == BiomeGenBase.icePlains)
-		{
-			disabledSpecialBiomes[1][0] = 1;
-			disabledSpecialBiomes[1][1] = BiomeGenBase.plains.biomeID;
-		}
-		else if(biome == BiomeGenBase.swampland)
-		{
-			disabledSpecialBiomes[1][0] = 1;
-			disabledSpecialBiomes[1][1] = BiomeGenBase.plains.biomeID;
-		}
-		else if(biome == BiomeGenBase.mushroomIsland)
-		{
-			disabledSpecialBiomes[1][0] = 1;
-			disabledSpecialBiomes[1][1] = BiomeGenBase.plains.biomeID;
+			replaceBiome(BiomeGenBase.river, BiomeGenBase.plains);
 		}
 		else if(biome == BiomeGenBase.beach || biome == BiomeGenBase.mushroomIslandShore)
 		{
@@ -97,40 +99,4 @@ public abstract class BiomeAPI
 			GenLayerBiome.biomeArray = biomeArray;
 		}
 	}
-	
-	/**
-	 * For the following biomes, their generation is not controlled by the GenLayerBiome and as such a hack is used to disable them
-	 * The biomes are simply switch wholesale for another biome and this function allows you to set them. The default is plains
-	 * ocean - will also disable beach
-	 * river
-	 * mushroomIsland - will also disable mushroom island shore
-	 * icePlains
-	 * @param To be replaced
-	 * @param Replacee
-	 */
-	public static void setBiomeReplacement(BiomeGenBase biome1, BiomeGenBase biome2)
-	{
-		if(biome1 == BiomeGenBase.ocean)
-		{
-			disabledSpecialBiomes[0][1] = biome2.biomeID;
-		}
-		else if(biome1 == BiomeGenBase.river)
-		{
-			disabledSpecialBiomes[1][1] = biome2.biomeID;
-		}
-		else if(biome1 == BiomeGenBase.icePlains)
-		{
-			disabledSpecialBiomes[2][1] = biome2.biomeID;
-		}
-		else if(biome1 == BiomeGenBase.mushroomIsland)
-		{
-			disabledSpecialBiomes[3][1] = biome2.biomeID;
-		}
-		else throw new MinecraftException("You can only set a replacement for the ocean, river, icePlains, swampland and mushroomIsland");
-	}
-	
-	/**
-	 * This holds the replacement biomes
-	 */
-	public static int[][] disabledSpecialBiomes = new int[4][2];
 }
