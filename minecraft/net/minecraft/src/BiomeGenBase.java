@@ -217,6 +217,31 @@ public abstract class BiomeGenBase
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEnderman.class, 1, 1, 4));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySquid.class, 10, 4, 4));
     }
+    
+    /** Whether or not the biome is enabled, only used for new biomes */
+    private boolean enabled = true;
+    
+    public BiomeGenBase(int id, String name)
+    {
+    	this(id);
+    	if(ModLoader.props.containsKey("Biome" + name))
+			enabled = Boolean.parseBoolean(ModLoader.props.getProperty(name));
+    	else
+    		ModLoader.props.put("Biome" + name, "true");
+    }
+    
+    protected void setEnabled(String name)
+    {
+    	if(ModLoader.props.containsKey("Biome" + name))
+			enabled = Boolean.parseBoolean(ModLoader.props.getProperty(name));
+    	else
+    		ModLoader.props.put("Biome" + name, "true");
+    }
+    
+    public boolean isEnabled()
+    {
+    	return enabled;
+    }
 
     /**
      * Allocate a new BiomeDecorator for this BiomeGenBase
@@ -426,6 +451,8 @@ public abstract class BiomeGenBase
      */
 	public BiomeGenBase addBiomeGen()
 	{
+		if(!enabled) return this;
+		
 		for(int i = 0; i < GenLayerBiome.biomeArray.length; i++)
 			if(this == GenLayerBiome.biomeArray[i]) return this;
 		BiomeGenBase[] biomeArray = new BiomeGenBase[GenLayerBiome.biomeArray.length + 1];
@@ -443,7 +470,7 @@ public abstract class BiomeGenBase
 	 */
 	public BiomeGenBase addBiomeSpawn()
 	{
-		WorldChunkManager.addBiomeToSpawnIn(this);
+		if(enabled) WorldChunkManager.addBiomeToSpawnIn(this);
 		return this;
 	}
 	
@@ -453,6 +480,7 @@ public abstract class BiomeGenBase
 	 */
 	public BiomeGenBase addBiomeVillage()
 	{
+		if(!enabled) return this;
 		for(int i = 0; i < MapGenVillage.villageSpawnBiomes.size(); i++)
 			if(this == MapGenVillage.villageSpawnBiomes.get(i)) return this;
 		MapGenVillage.villageSpawnBiomes = Arrays.asList(MapGenVillage.villageSpawnBiomes, this);
@@ -465,7 +493,7 @@ public abstract class BiomeGenBase
 	 */
 	public BiomeGenBase addBiomeStronghold()
 	{
-		MapGenStronghold.addStrongholdBiomes(this);
+		if(enabled) MapGenStronghold.addStrongholdBiomes(this);
 		return this;
 	}
 	

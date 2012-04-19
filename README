@@ -1,9 +1,7 @@
 BiomeAPI for Minecraft 1.2.5
 By Hyperion88 (Hyperion2288 on github because someone sucks)
 
-This is a minecraft mod made to make biome mods easier to make and to be compatible with one another.
-ModLoader is required for this api. Basic documentation can be found in doc.txt and the example
-folder has a basic example of utilizing the API.
+This is a minecraft mod made to make biome mods easier to make and to be compatible with one another. ModLoader is required for this api. Basic documentation can be found in doc.txt and the example folder has a basic example of utilizing the API.
 
 TODO:
 A more costomizable replacement to GenLayer (sort of working on a 2d perlin noise generator)

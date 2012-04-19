@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
 
 
 public abstract class BiomeAPI
@@ -52,17 +54,32 @@ public abstract class BiomeAPI
 	public static int getNextBiomeID(String key)
 	{
 		//Start by searching for the biome in the config file
-		if(ModLoader.props.containsKey(key))
-			return Integer.parseInt(ModLoader.props.getProperty(key));
+		if(ModLoader.props.containsKey("BiomeID" + key))
+			return Integer.parseInt(ModLoader.props.getProperty("BiomeID" + key));
 		
 		//Didn't find it so search for a new id
-		for(int i = 0; i < BiomeGenBase.biomeList.length; i++)
+		for(int i = 23; i < BiomeGenBase.biomeList.length; i++)
+		{
 			if(BiomeGenBase.biomeList[i] == null) 
 			{
-				// Add the value to the config file
-				ModLoader.props.setProperty(key, Integer.toString(i));
-				return i;
-			}
+				Iterator iter = ModLoader.props.entrySet().iterator();
+				boolean found = false;
+				while(iter.hasNext())
+				{
+					Map.Entry<String, String> e = (Map.Entry<String, String>)iter.next();
+					if(e == null) throw new MinecraftException("WTF?");
+					if(e.getKey().startsWith("BiomeID") && e.getKey() != ("BiomeID" + key))
+						if(Integer.parseInt(e.getValue()) == i)
+							found = true;	
+				}
+				if(!found)
+				{
+					// Add the value to the config file
+					ModLoader.props.setProperty("BiomeID" + key, Integer.toString(i));
+					return i;
+				}
+			}	
+		}
 		// return -1 if the array is filled up and there are no slots left
 		return -1; 
 	}
