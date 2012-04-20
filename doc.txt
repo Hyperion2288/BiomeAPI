@@ -16,13 +16,13 @@ class BiomeAPI
 	public static void setWorldGenerator(IWorldGenerator newWorldGen);
 	
         /**
-         * This assigns a biome an id based on the avaiable slots
-         * It also searches for the id in config file if this is not the first time running the mod
-         * Key should be a unique identifier for the biome
-         * @param key
-         * @return
-         */
-        public static int getNextBiomeID(String key);
+	 * This assigns a biome an id based on the avaiable slots
+	 * It also searches for the id in config file if this is not the first time running the mod
+	 * Key should be a unique identifier for the biome. Appends 'BiomeID' to the key.
+	 * @param key
+	 * @return
+	 */
+	public static int getNextBiomeID(String key);
 	
 	/**
 	 * This replaces one biome with another in the BiomeGenBase.biomeList
@@ -108,6 +108,41 @@ class BiomeGenBase
      * @return
      */
     public static WorldGenerator getWorldGen(String key);
+
+    /**
+     * This constructor sets up the biome to check for whether it is enabled in the config file.
+     * See BiomeGenBase.setEnabled(String)
+     * @param id
+     * @param name
+     */
+    public BiomeGenBase(int id, String name);
+
+    /**
+     * This constructor sets up the biome to check for whether it is enabled in the config file.
+     * It also calls BiomeAPI.getNextBiomeID(string) for the id
+     * This is constructor exists so that user only needs to base the name once since the name is likely to be the same for both
+     * setEnabled(String) and BiomeAPI.getNextBiomeID(String)
+     * @param name
+     */
+    public BiomeGenBase(String name);
+
+    /**
+     * This sets up the biome to be enabled through the config file. It takes the name of biome and appends 'Biome' to it
+     * To disable simplely find the biome in the config and set it to 'false'. When set to false it will not be added to
+     * the default world generator, the spawn list, the village spawn list and the stronghold spawn list.
+     * This does not affect the vanilla biomes. If you want it to then call this function for that biome with an appropriate
+     * name and then query the enabled state through isEnabled() and then finnally call BiomeAPI.removeBiome(BiomeGenBase) if needed.
+     * @param name
+     */
+    public void setEnabled(String name);
+
+
+    /**
+     * Returns whether or not this biome is enabled. Will return true if the biome does not have a config entry.
+     * @return
+     */
+    public boolean isEnabled();
+
 
     /**
      * This adds the biome to the default world generator in GenLayerBiome

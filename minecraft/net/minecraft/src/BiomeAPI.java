@@ -47,7 +47,7 @@ public abstract class BiomeAPI
 	/**
 	 * This assigns a biome an id based on the avaiable slots
 	 * It also searches for the id in config file if this is not the first time running the mod
-	 * Key should be a unique identifier for the biome
+	 * Key should be a unique identifier for the biome. Appends 'BiomeID' to the key.
 	 * @param key
 	 * @return
 	 */

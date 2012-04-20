@@ -221,16 +221,40 @@ public abstract class BiomeGenBase
     /** Whether or not the biome is enabled, only used for new biomes */
     private boolean enabled = true;
     
+    /**
+     * This constructor sets up the biome to check for whether it is enabled in the config file.
+     * See BiomeGenBase.setEnabled(String)
+     * @param id
+     * @param name
+     */
     public BiomeGenBase(int id, String name)
     {
     	this(id);
-    	if(ModLoader.props.containsKey("Biome" + name))
-			enabled = Boolean.parseBoolean(ModLoader.props.getProperty(name));
-    	else
-    		ModLoader.props.put("Biome" + name, "true");
+    	setEnabled(name);
     }
     
-    protected void setEnabled(String name)
+    /**
+     * This constructor sets up the biome to check for whether it is enabled in the config file.
+     * It also calls BiomeAPI.getNextBiomeID(string) for the id
+     * This is constructor exists so that user only needs to base the name once since the name is likely to be the same for both
+     * setEnabled(String) and BiomeAPI.getNextBiomeID(String)
+     * @param name
+     */
+    public BiomeGenBase(String name)
+    {
+    	this(BiomeAPI.getNextBiomeID(name));
+    	setEnabled(name);
+    }
+    
+    /**
+     * This sets up the biome to be enabled through the config file. It takes the name of biome and appends 'Biome' to it
+     * To disable simplely find the biome in the config and set it to 'false'. When set to false it will not be added to
+     * the default world generator, the spawn list, the village spawn list and the stronghold spawn list.
+     * This does not affect the vanilla biomes. If you want it to then call this function for that biome with an appropriate
+     * name and then query the enabled state through isEnabled() and then finnally call BiomeAPI.removeBiome(BiomeGenBase) if needed.
+     * @param name
+     */
+    public void setEnabled(String name)
     {
     	if(ModLoader.props.containsKey("Biome" + name))
 			enabled = Boolean.parseBoolean(ModLoader.props.getProperty(name));
@@ -238,6 +262,10 @@ public abstract class BiomeGenBase
     		ModLoader.props.put("Biome" + name, "true");
     }
     
+    /**
+     * Returns whether or not this biome is enabled. Will return true if the biome does not have a config entry.
+     * @return
+     */
     public boolean isEnabled()
     {
     	return enabled;
