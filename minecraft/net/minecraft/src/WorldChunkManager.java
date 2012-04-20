@@ -31,7 +31,8 @@ public class WorldChunkManager
         this.biomesToSpawnIn.add(BiomeGenBase.forestHills);
         this.biomesToSpawnIn.add(BiomeGenBase.jungle);
         this.biomesToSpawnIn.add(BiomeGenBase.jungleHills);
-        this.biomesToSpawnIn.add(biomesToAddIn);
+        for(int i = 0; i < this.biomesToAddIn.size(); i++)
+        	this.biomesToSpawnIn.add(biomesToAddIn.get(i));
     }
 
     public WorldChunkManager(long par1, WorldType par3WorldType)

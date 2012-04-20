@@ -257,7 +257,7 @@ public abstract class BiomeGenBase
     public void setEnabled(String name)
     {
     	if(ModLoader.props.containsKey("Biome" + name))
-			enabled = Boolean.parseBoolean(ModLoader.props.getProperty(name));
+			enabled = Boolean.parseBoolean(ModLoader.props.getProperty("Biome" + name));
     	else
     		ModLoader.props.put("Biome" + name, "true");
     }
