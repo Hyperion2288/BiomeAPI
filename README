@@ -7,5 +7,4 @@ TODO:
 A more costomizable replacement to GenLayer (sort of working on a 2d perlin noise generator)
 Better spawnCreature support
 SMP support
-Automatic config support (finished?)
 Hook into ChunkProviderGenerate (maybe)
